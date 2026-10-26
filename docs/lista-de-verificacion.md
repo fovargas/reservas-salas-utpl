@@ -45,4 +45,4 @@ La rúbrica del Proyecto Final convertida en comprobaciones, con dónde está la
 - [x] README con ejecución, direcciones por entorno, arquitectura, decisión técnica, seguridad y créditos.
 - [x] Historial de commits real.
 - [x] Release `v1.0.0` con el APK generado por Actions, probado en un emulador limpio.
-- [ ] Enlace del repositorio subido a Moodle.
+- [x] Enlace del repositorio subido a Moodle.

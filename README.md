@@ -37,6 +37,7 @@ Edita `backend/.env`:
 
 - `SECRET_KEY`: pon una cadena aleatoria larga. Puedes generarla con `python -c "import secrets; print(secrets.token_hex(32))"`.
 - `GEMINI_API_KEY`: opcional. Sin ella, el asistente funciona en modo básico.
+- `GEMINI_MODEL`: lista de modelos separados por comas; si uno está saturado o retirado, se usa el siguiente. Deja el valor de `.env.example`.
 
 Levántalo con Docker (crea la base SQLite y aplica las migraciones solo):
 
@@ -86,7 +87,7 @@ Abre la app, toca **¿No tienes cuenta? Regístrate** y crea un usuario (contras
 
 ```bash
 cd app && flutter analyze && flutter test          # 18 pruebas, servidor falso
-cd backend && uv run ruff check . && uv run pytest  # 65 pruebas
+cd backend && uv run ruff check . && uv run pytest  # 68 pruebas
 ```
 
 `.github/workflows/ci.yml` ejecuta ambas en cada push y pull request. `.github/workflows/release-apk.yml` compila y publica el APK al subir una etiqueta `v*`.

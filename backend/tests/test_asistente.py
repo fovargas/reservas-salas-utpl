@@ -88,3 +88,12 @@ def test_asistente_responde_por_api(client, api_asistente):
 
     assert response.status_code == 200
     assert response.json()["salas_sugeridas"] == ["aula_magna"]
+
+
+def test_modo_basico_no_confunde_videoconferencia_con_auditorio():
+    resultado = asistente_service.responder(
+        None, 1, "sala con videoconferencia para 12 personas", None, hoy=HOY, repo=RepositorioFalso()
+    )
+
+    assert "auditorio_campus" not in resultado["salas_sugeridas"]
+    assert "aula_magna" not in resultado["salas_sugeridas"]

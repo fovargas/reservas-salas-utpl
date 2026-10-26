@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     mcp_issuer_url: str = "http://127.0.0.1:8000"
     mcp_resource_url: str = "http://127.0.0.1:8000/mcp"
     gemini_api_key: str = ""
-    gemini_model: str = "gemini-2.5-flash"
+    gemini_model: str = "gemini-3.8-flash,gemini-3.5-flash-lite"
 
 
 settings = Settings()

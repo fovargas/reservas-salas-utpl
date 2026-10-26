@@ -78,7 +78,9 @@ def _respuesta_ia(cliente_ia, pregunta: str, contexto: dict) -> dict:
 def _respuesta_basica(pregunta: str, contexto: dict) -> dict:
     texto = pregunta.lower()
     personas = max((int(n) for n in re.findall(r"\d+", texto)), default=0)
-    tipos = {t for t, palabras in PALABRAS_TIPO.items() if any(p in texto for p in palabras)}
+    tipos = {
+        t for t, palabras in PALABRAS_TIPO.items() if any(re.search(rf"\b{re.escape(p)}\b", texto) for p in palabras)
+    }
 
     ocupadas_por_sala: dict[str, int] = {}
     for franja in contexto["ocupacion"]:

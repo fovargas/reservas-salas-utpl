@@ -2,6 +2,7 @@ import logging
 from datetime import date, time
 
 from app.repositories import reservas as reservas_repository
+from app.utils.salas import SALAS_POR_ID
 from app.utils.validadores import sala_valida, horario_valido
 
 logger = logging.getLogger(__name__)
@@ -59,7 +60,7 @@ def crear_reserva(
             fecha,
         )
         raise SolapamientoError(
-            f"La sala '{sala}' ya está reservada en ese horario el {fecha}"
+            f"{SALAS_POR_ID[sala]['nombre']} ya está reservada en ese horario el {fecha:%d/%m/%Y}. Elige otra hora o revisa la disponibilidad."
         )
 
     reserva = repo.guardar(db, usuario_id, sala, fecha, hora_inicio, hora_fin, motivo)

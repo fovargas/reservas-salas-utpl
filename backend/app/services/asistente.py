@@ -99,10 +99,11 @@ def _respuesta_basica(pregunta: str, contexto: dict) -> dict:
         )
     else:
         lista = "; ".join(f"{s['nombre']} ({s['edificio']}, {s['capacidad']} personas)" for s in elegidas)
-        respuesta = f"Te sugiero: {lista}. Son las que tienen menos reservas en los próximos días."
+        cierre = "Es la que tiene" if len(elegidas) == 1 else "Son las que tienen"
+        respuesta = f"Te sugiero: {lista}. {cierre} menos reservas en los próximos días."
     propias = sum(1 for f in contexto["ocupacion"] if f["propia"])
     if propias:
-        respuesta += f" Tienes {propias} reserva(s) en los próximos {DIAS_DE_CONTEXTO} días."
+        respuesta += f" Tienes {propias} {'reserva' if propias == 1 else 'reservas'} en los próximos {DIAS_DE_CONTEXTO} días."
     return {
         "respuesta": respuesta,
         "modo": "basico",

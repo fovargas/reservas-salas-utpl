@@ -7,6 +7,8 @@ from app.schemas.usuario import UsuarioCreate, UsuarioResponse
 from app.services import usuarios as usuarios_service
 from app.services.usuarios import EmailYaRegistradoError, CredencialesInvalidasError
 from app.security import crear_access_token
+from app.dependencies import get_current_user
+from app.models.usuario import Usuario
 
 router = APIRouter(prefix="/usuarios", tags=["usuarios"])
 
@@ -28,3 +30,8 @@ def login(form: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get
 
     token = crear_access_token({"sub": usuario.email})
     return {"access_token": token, "token_type": "bearer"}
+
+
+@router.get("/me", response_model=UsuarioResponse)
+def yo(usuario_actual: Usuario = Depends(get_current_user)):
+    return usuario_actual

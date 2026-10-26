@@ -70,3 +70,18 @@ def test_flujo_completo_login_y_crear_reserva(client):
 
     assert response.status_code == 201
     assert response.json()["sala"] == "laboratorio_redes"
+
+
+def test_usuarios_me_sin_token_devuelve_401(client):
+    assert client.get("/usuarios/me").status_code == 401
+
+
+def test_usuarios_me_con_token_devuelve_el_usuario(client):
+    datos = {"email": "me@utpl.edu.ec", "password": "clave-segura-1"}
+    client.post("/usuarios/", json=datos)
+    token = client.post("/usuarios/token", data={"username": datos["email"], "password": datos["password"]}).json()["access_token"]
+
+    response = client.get("/usuarios/me", headers={"Authorization": f"Bearer {token}"})
+
+    assert response.status_code == 200
+    assert response.json()["email"] == "me@utpl.edu.ec"

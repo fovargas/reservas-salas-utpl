@@ -1,0 +1,72 @@
+# CI: en cada push o pull request, una máquina limpia analiza y prueba la app
+# (app/) y el backend (backend/). Si algo falla, GitHub lo marca en rojo antes
+# de integrar el cambio. No publica nada: eso lo hace release-apk.yml.
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  app:
+    name: App Flutter
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v7
+
+      - name: Instalar Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Descargar las dependencias
+        run: flutter pub get
+
+      - name: Analizar el código
+        run: flutter analyze --no-fatal-infos
+
+      - name: Ejecutar las pruebas
+        run: flutter test
+
+  backend:
+    name: Backend FastAPI
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v7
+
+      - name: Instalar uv
+        run: pipx install uv
+
+      - name: Instalar las dependencias
+        run: uv sync --frozen
+
+      - name: Crear un .env de prueba (clave aleatoria, se descarta al terminar)
+        run: |
+          cp .env.example .env
+          sed -i "s/^SECRET_KEY=.*/SECRET_KEY=$(openssl rand -hex 32)/" .env
+
+      - name: Revisar el estilo
+        run: uv run ruff check .
+
+      - name: Ejecutar las pruebas
+        run: uv run pytest -q

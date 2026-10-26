@@ -103,7 +103,7 @@ uv run pytest --cov=app --cov-report=term-missing -v
 uv run ruff check .
 ```
 
-Estado actual: **49 tests, todos en verde**. Cobertura: `services/` 100%
+Estado actual: **65 tests, todos en verde**. Cobertura: `services/` 100%
 (umbral constitución: ≥90%), conjunto del proyecto 95% (umbral: ≥70%).
 
 ## Checklist de requisitos mínimos (Proyecto Integrador)

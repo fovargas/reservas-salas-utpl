@@ -2,7 +2,9 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 
+from app.config import settings
 from app.database import get_db
+from app.ia.gemini import ClienteGemini
 from app.security import decodificar_token
 from app.repositories import usuarios as usuarios_repository
 from app.repositories import reservas as reservas_repository
@@ -32,3 +34,9 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
 
 def get_reservas_repo():
     return reservas_repository
+
+
+def get_cliente_ia():
+    if not settings.gemini_api_key:
+        return None
+    return ClienteGemini(settings.gemini_api_key, settings.gemini_model)

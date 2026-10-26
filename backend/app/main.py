@@ -7,7 +7,7 @@ from fastapi.responses import JSONResponse
 
 from app.config import settings
 from app.logging_config import configurar_logging
-from app.routers import usuarios, reservas
+from app.routers import asistente, reservas, salas, usuarios
 from app.mcp.server import mcp as mcp_server
 
 configurar_logging(settings.log_level)
@@ -32,6 +32,8 @@ async def lifespan(app: FastAPI):
 app = FastAPI(title="API de Reservas de Salas UTPL", lifespan=lifespan)
 app.include_router(usuarios.router)
 app.include_router(reservas.router)
+app.include_router(salas.router)
+app.include_router(asistente.router)
 app.mount("/mcp", mcp_app)
 
 

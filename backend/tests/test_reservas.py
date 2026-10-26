@@ -55,6 +55,15 @@ class RepositorioFalso:
     def eliminar(self, db, reserva_id):
         self._reservas = [r for r in self._reservas if r["id"] != reserva_id]
 
+    def listar_por_sala_y_fecha(self, db, sala, fecha):
+        return sorted(
+            (r for r in self._reservas if r["sala"] == sala and r["fecha"] == fecha),
+            key=lambda r: r["hora_inicio"],
+        )
+
+    def listar_entre_fechas(self, db, desde, hasta):
+        return [r for r in self._reservas if desde <= r["fecha"] <= hasta]
+
 
 # Gracias a DIP: se inyecta un repositorio falso, no se necesita unittest.mock.
 def test_crear_reserva_exitosa():

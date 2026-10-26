@@ -1,0 +1,14 @@
+services:
+  backend:
+    build: .
+    container_name: reservas-utpl-backend
+    env_file: .env
+    environment:
+      DATABASE_URL: sqlite:////data/reservas.db
+    ports:
+      - "8000:8000"
+    volumes:
+      - datos:/data
+
+volumes:
+  datos:

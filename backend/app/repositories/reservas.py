@@ -73,3 +73,23 @@ def eliminar(db: Session, reserva_id: int) -> None:
     if reserva is not None:
         db.delete(reserva)
         db.commit()
+
+
+def listar_por_sala_y_fecha(db: Session, sala: str, fecha: date) -> list[dict]:
+    reservas = (
+        db.query(Reserva)
+        .filter(Reserva.sala == sala, Reserva.fecha == fecha)
+        .order_by(Reserva.hora_inicio)
+        .all()
+    )
+    return [_a_dict(r) for r in reservas]
+
+
+def listar_entre_fechas(db: Session, desde: date, hasta: date) -> list[dict]:
+    reservas = (
+        db.query(Reserva)
+        .filter(Reserva.fecha >= desde, Reserva.fecha <= hasta)
+        .order_by(Reserva.fecha, Reserva.hora_inicio)
+        .all()
+    )
+    return [_a_dict(r) for r in reservas]

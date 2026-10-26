@@ -1,14 +1,9 @@
 from datetime import time
 
-# OCP: agregar una sala nueva del campus = agregar un valor aquí.
-# Las funciones de abajo nunca cambian.
-SALAS_VALIDAS = {
-    "sala_reuniones_biblioteca",
-    "auditorio_campus",
-    "laboratorio_redes",
-    "sala_posgrados",
-    "aula_magna",
-}
+from app.utils.salas import SALAS_POR_ID
+
+# OCP: agregar una sala nueva del campus = agregarla en utils/salas.py.
+SALAS_VALIDAS = set(SALAS_POR_ID)
 
 
 def sala_valida(sala: str) -> bool:

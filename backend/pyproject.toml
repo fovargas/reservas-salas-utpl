@@ -1,0 +1,58 @@
+[project]
+name = "reservas-utpl"
+version = "0.1.0"
+description = "Sistema de reservas de salas UTPL - Backend REST + MCP (Proyecto Integrador MOD2)"
+authors = [
+    { name = "fovargas", email = "fovargas@utpl.edu.ec" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "alembic>=1.20.0",
+    "bcrypt<4.1",
+    "email-validator>=2.3.0",
+    "fastapi>=0.141.1",
+    "mcp[cli]<2",
+    "passlib[bcrypt]>=1.7.4",
+    "pydantic-settings>=2.15.0",
+    "pyjwt>=2.14.0",
+    "python-multipart>=0.0.32",
+    "sqlalchemy>=2.0.54",
+    "uvicorn[standard]>=0.53.0",
+]
+
+[build-system]
+requires = ["uv_build>=0.12.9,<0.13.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "app"
+module-root = ""
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+
+[tool.coverage.run]
+omit = [
+    "app/main.py",
+    "app/mcp/server.py",
+    "app/mcp/auth.py",
+    "app/logging_config.py",
+]
+
+[tool.ruff]
+exclude = [".venv", "alembic/versions"]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F"]
+
+[tool.ruff.lint.per-file-ignores]
+"alembic/env.py" = ["E402", "F401"]
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "pytest>=9.1.1",
+    "pytest-cov>=7.1.0",
+    "pytest-json-report>=1.5.0",
+    "ruff>=0.16.8",
+]
